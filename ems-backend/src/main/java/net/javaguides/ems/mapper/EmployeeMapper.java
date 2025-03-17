@@ -4,21 +4,23 @@ import net.javaguides.ems.dto.EmployeeDto;
 import net.javaguides.ems.entity.Employee;
 
 public class EmployeeMapper {
-    public static EmployeeDto mapToEmployeeDto(Employee employee){
-        return new EmployeeDto(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getEmail()
-        );
-    }
+  public static EmployeeDto mapToEmployeeDto(Employee employee) {
+    return new EmployeeDto(
+        employee.getId(),
+        employee.getFirstName(),
+        employee.getLastName(),
+        employee.getEmail(),
+        employee.getDetails() == null ? null : employee.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetailsDto).toList()
+    );
+  }
 
-    public static Employee mapToEmployee(EmployeeDto employeeDto){
-        return new Employee(
-                employeeDto.getId(),
-                employeeDto.getFirstName(),
-                employeeDto.getLastName(),
-                employeeDto.getEmail()
-        );
-    }
+  public static Employee mapToEmployee(EmployeeDto employeeDto) {
+    return new Employee(
+        employeeDto.getId(),
+        employeeDto.getFirstName(),
+        employeeDto.getLastName(),
+        employeeDto.getEmail(),
+        employeeDto.getDetails() == null ? null : employeeDto.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetails).toList()
+    );
+  }
 }
