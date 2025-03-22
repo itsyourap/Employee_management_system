@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -66,14 +67,14 @@ public class Task {
   }
 
   public boolean assignEmployee(Employee employee){
-    if (assignedEmployees.stream().anyMatch(o -> o.getId() == employee.getId()))
+    if (assignedEmployees.stream().anyMatch(o -> Objects.equals(o.getId(), employee.getId())))
       return false;
 
     return this.assignedEmployees.add(employee);
   }
 
   public boolean removeEmployeeAssignment(Employee employee){
-    if (assignedEmployees.stream().anyMatch(o ->  o.getId() == employee.getId()))
+    if (assignedEmployees.stream().anyMatch(o -> Objects.equals(o.getId(), employee.getId())))
       return this.assignedEmployees.remove(employee);
 
     return false;
