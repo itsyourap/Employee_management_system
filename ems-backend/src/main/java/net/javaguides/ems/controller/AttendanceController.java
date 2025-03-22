@@ -18,7 +18,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/attendance/")
 public class AttendanceController {
   private EmployeeRepository employeeRepository;
   private AttendanceRepository attendanceRepository;
