@@ -1,0 +1,47 @@
+name: Build EMS Backend
+
+on: 
+    workflow_dispatch:
+    pull_request:
+      branches: [ main ]
+      paths:
+        - 'ems-backend/src/**'
+        - '.github/workflows/build-backend.yml'
+    push:
+      branches: [ main ]
+      paths:
+        - 'ems-backend/src/**'
+        - '.github/workflows/build-backend.yml'
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 22
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+
+      - name: Set up the Maven dependencies caching
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Install Maven dependencies
+        working-directory: ./ems-backend
+        run: mvn dependency:resolve
+
+      - name: Build with Maven
+        working-directory: ./ems-backend
+        run: mvn clean package -DskipTests
+
+      - name: Upload the build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ems-backend-artifact
+          path: ./ems-backend/target/*.jar
