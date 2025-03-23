@@ -25,28 +25,4 @@ public class CheckIn {
 
   @Column(name = "date_time")
   private LocalDateTime dateTime;
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public void setEmployee(Employee employee) {
-    this.employee = employee;
-  }
-
-  public LocalDateTime getDateTime() {
-    return dateTime;
-  }
-
-  public void setDateTime(LocalDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
 }
