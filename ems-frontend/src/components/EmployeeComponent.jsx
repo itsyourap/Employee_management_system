@@ -10,6 +10,7 @@ const EmployeeComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [details, setDetails] = useState([{ key: "", value: "" }]);
 
   function handleFirstName(e) {
     setFirstName(e.target.value);
@@ -21,6 +22,21 @@ const EmployeeComponent = () => {
 
   function handleEmail(e) {
     setEmail(e.target.value);
+  }
+
+  function handleDetailChange(index, field, value) {
+    const updatedDetails = [...details];
+    updatedDetails[index][field] = value;
+    setDetails(updatedDetails);
+  }
+
+  function addDetailField() {
+    setDetails([...details, { key: "", value: "" }]);
+  }
+
+  function removeDetailField(index) {
+    const newDetails = details.filter((_, i) => i !== index);
+    setDetails(newDetails);
   }
 
   const [errors, setErrors] = useState({
@@ -36,7 +52,19 @@ const EmployeeComponent = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      const employee = { firstName, lastName, email };
+      const detailsArray = [];
+      details.forEach((detail) => {
+        if (detail.key.trim() && detail.value.trim()) {
+          detailsArray.push({ key: detail.key, value: detail.value });
+        }
+      });
+
+      const employee = {
+        firstName,
+        lastName,
+        email,
+        details: detailsArray,
+      };
 
       if (id) {
         updateEmployee(id, employee)
@@ -67,6 +95,14 @@ const EmployeeComponent = () => {
           setFirstName(response.data.firstName);
           setLastName(response.data.lastName);
           setEmail(response.data.email);
+          if (response.data.details) {
+            const detailsArray = Object.entries(response.data.details).map(
+              ([key, value]) => ({ key, value })
+            );
+            setDetails(
+              detailsArray.length > 0 ? detailsArray : [{ key: "", value: "" }]
+            );
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -128,8 +164,8 @@ const EmployeeComponent = () => {
                   className={`form-control ${
                     errors.firstName ? "is-invalid" : ""
                   }`}
-                  onChange={handleFirstName}
-                ></input>
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
                 {errors.firstName && (
                   <div className="invalid-feedback">{errors.firstName}</div>
                 )}
@@ -144,8 +180,8 @@ const EmployeeComponent = () => {
                   className={`form-control ${
                     errors.lastName ? "is-invalid" : ""
                   }`}
-                  onChange={handleLastName}
-                ></input>
+                  onChange={(e) => setLastName(e.target.value)}
+                />
                 {errors.lastName && (
                   <div className="invalid-feedback">{errors.lastName}</div>
                 )}
@@ -158,12 +194,59 @@ const EmployeeComponent = () => {
                   name="email"
                   value={email}
                   className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                  onChange={handleEmail}
-                ></input>
+                  onChange={(e) => setEmail(e.target.value)}
+                />
                 {errors.email && (
                   <div className="invalid-feedback">{errors.email}</div>
                 )}
               </div>
+
+              <div className="form-group mb-2">
+                <label className="form-label">Additional Details:</label>
+                {details.map((detail, index) => (
+                  <div key={index} className="row mb-2">
+                    <div className="col">
+                      <input
+                        type="text"
+                        placeholder="Key"
+                        className="form-control"
+                        value={detail.key}
+                        onChange={(e) =>
+                          handleDetailChange(index, "key", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="col">
+                      <input
+                        type="text"
+                        placeholder="Value"
+                        className="form-control"
+                        value={detail.value}
+                        onChange={(e) =>
+                          handleDetailChange(index, "value", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="col-auto">
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => removeDetailField(index)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={addDetailField}
+                >
+                  Add Detail
+                </button>
+              </div>
+
               <button
                 className="btn btn-primary mt-2"
                 onClick={saveOrUpdateEmployee}

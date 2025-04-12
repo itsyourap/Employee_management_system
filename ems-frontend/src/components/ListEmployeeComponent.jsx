@@ -53,6 +53,7 @@ const ListEmployeeComponent = () => {
             <th>Employee First Name</th>
             <th>Employee Last Name</th>
             <th>Employee Mail ID</th>
+            <th>Additional Details</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -63,6 +64,13 @@ const ListEmployeeComponent = () => {
               <td>{employee.firstName}</td>
               <td>{employee.lastName}</td>
               <td>{employee.email}</td>
+              <td>
+                {employee.details && employee.details.map((detail, index) => (
+                  <div key={index}>
+                    <strong>{detail.key}:</strong> {detail.value}
+                  </div>
+                ))}
+              </td>
               <td>
                 <button
                   className="btn btn-info"
