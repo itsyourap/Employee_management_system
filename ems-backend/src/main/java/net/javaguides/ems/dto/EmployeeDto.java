@@ -18,4 +18,5 @@ public class EmployeeDto {
   private String lastName;
   private String email;
   private List<EmployeeDetailsDto> details;
+  private List<EmergencyContactDto> emergencyContacts;
 }

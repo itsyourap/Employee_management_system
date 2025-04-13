@@ -65,6 +65,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.getDetails().add(detail);
       }
     }
+    
+    // Note: We're not handling emergency contacts here as they're managed 
+    // through the EmergencyContactService for more fine-grained control
+    
     Employee updatedEmployee = employeeRepository.save(employee);
     return EmployeeMapper.mapToEmployeeDto(updatedEmployee);
   }

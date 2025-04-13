@@ -35,4 +35,7 @@ public class Employee {
   
   @OneToMany(mappedBy = "assignedEmployee", cascade = CascadeType.ALL)
   private List<Asset> assets = new ArrayList<>();
+  
+  @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<EmergencyContact> emergencyContacts = new ArrayList<>();
 }
