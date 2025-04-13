@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import net.javaguides.ems.exception.ResourceNotFoundException;
 import net.javaguides.ems.entity.Employee;
 import net.javaguides.ems.entity.Task;
+import net.javaguides.ems.dto.TaskDto;
+import net.javaguides.ems.mapper.TaskMapper;
 import net.javaguides.ems.repository.EmployeeRepository;
 import net.javaguides.ems.repository.TaskRepository;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -23,8 +26,9 @@ public class TaskController {
 
   // Get All Tasks
   @GetMapping("/tasks")
-  public List<Task> getAllTasks() {
-    return taskRepository.findAll();
+  public List<TaskDto> getAllTasks() {
+    List<Task> tasks = taskRepository.findAll();
+    return tasks.stream().map(TaskMapper::mapToTaskDto).collect(Collectors.toList());
   }
 
   // Create New Task
@@ -35,16 +39,16 @@ public class TaskController {
 
   // Get Task by ID
   @GetMapping("/tasks/{id}")
-  public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+  public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
     Task task = taskRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Task does not exist with id:" + id));
 
-    return ResponseEntity.ok(task);
+    return ResponseEntity.ok(TaskMapper.mapToTaskDto(task));
   }
 
   // Update Task by ID
   @PutMapping("/tasks/{id}")
-  public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
+  public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
     Task task = taskRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Task does not exist with id:" + id));
 
@@ -54,7 +58,7 @@ public class TaskController {
 
     Task updateTask = taskRepository.save(task);
 
-    return ResponseEntity.ok(updateTask);
+    return ResponseEntity.ok(TaskMapper.mapToTaskDto(updateTask));
   }
 
   // Delete Task by ID
@@ -70,7 +74,7 @@ public class TaskController {
 
   // Add Employee to Task by ID
   @PutMapping("/tasks/{taskId}/employees")
-  public ResponseEntity<Task> assignEmployeeToTask(@PathVariable Long taskId, @RequestBody Map<String, Long> data) {
+  public ResponseEntity<TaskDto> assignEmployeeToTask(@PathVariable Long taskId, @RequestBody Map<String, Long> data) {
     long employeeId = data.containsKey("employeeId") ? data.get("employeeId") : -1;
 
     Task task = taskRepository.findById(taskId)
@@ -82,14 +86,14 @@ public class TaskController {
     boolean assigned = task.assignEmployee(employee);
     Task updatedTask = taskRepository.save(task);
     if (assigned)
-      return ResponseEntity.ok(updatedTask);
+      return ResponseEntity.ok(TaskMapper.mapToTaskDto(updatedTask));
     else
-      return ResponseEntity.badRequest().body(updatedTask);
+      return ResponseEntity.badRequest().body(TaskMapper.mapToTaskDto(updatedTask));
   }
 
   // Remove Employee from Task
   @DeleteMapping("/tasks/{taskId}/employees/{employeeId}")
-  public ResponseEntity<Task> removeEmployeeFromTask(@PathVariable Long taskId, @PathVariable Long employeeId) {
+  public ResponseEntity<TaskDto> removeEmployeeFromTask(@PathVariable Long taskId, @PathVariable Long employeeId) {
     Task task = taskRepository.findById(taskId)
         .orElseThrow(() -> new ResourceNotFoundException("Task does not exist with id:" + taskId));
 
@@ -99,8 +103,8 @@ public class TaskController {
     boolean removed = task.removeEmployeeAssignment(employee);
     Task updatedTask = taskRepository.save(task);
     if (removed)
-      return ResponseEntity.ok(updatedTask);
+      return ResponseEntity.ok(TaskMapper.mapToTaskDto(updatedTask));
     else
-      return ResponseEntity.badRequest().body(updatedTask);
+      return ResponseEntity.badRequest().body(TaskMapper.mapToTaskDto(updatedTask));
   }
 }

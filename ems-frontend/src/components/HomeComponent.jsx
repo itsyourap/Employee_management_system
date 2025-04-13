@@ -21,6 +21,20 @@ const HomeComponent = () => {
             </div>
           </div>
         </div>
+        <div className="col-md-5 mb-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body text-center">
+              <h3 className="card-title mb-4">Task Management</h3>
+              <p className="card-text">Manage tasks and assignments for your employees, track progress and deadlines.</p>
+              <button 
+                className="btn btn-primary btn-lg"
+                onClick={() => navigate('/tasks')}
+              >
+                View Tasks
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
