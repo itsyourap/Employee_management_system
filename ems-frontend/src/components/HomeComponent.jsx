@@ -49,6 +49,7 @@ const HomeComponent = () => {
             </div>
           </div>
         </div>
+
         <div className="col-md-4 mb-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body text-center">
@@ -63,6 +64,22 @@ const HomeComponent = () => {
             </div>
           </div>
         </div>
+        
+        <div className="col-md-4 mb-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body text-center">
+              <h3 className="card-title mb-4">Check-In Management</h3>
+              <p className="card-text">Record and manage employee check-ins and check-outs, monitor attendance in real-time.</p>
+              <button 
+                className="btn btn-primary btn-lg"
+                onClick={() => navigate('/check-ins')}
+              >
+                View Check-Ins
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
