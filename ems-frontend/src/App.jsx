@@ -13,6 +13,8 @@ import ListAttendanceComponent from './components/ListAttendanceComponent'
 import AttendanceComponent from './components/AttendanceComponent'
 import ListCheckInComponent from './components/ListCheckInComponent'
 import CheckInComponent from './components/CheckInComponent'
+import ListLeaveComponent from './components/ListLeaveComponent'
+import LeaveComponent from './components/LeaveComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -43,6 +45,10 @@ function App() {
         {/* Check-In Management Routes */}
         <Route path='/check-ins' element={<ListCheckInComponent />}></Route>
         <Route path='/add-check-in' element={<CheckInComponent />}></Route>
+        {/* Leave Management Routes */}
+        <Route path='/leaves' element={<ListLeaveComponent />}></Route>
+        <Route path='/add-leave' element={<LeaveComponent />}></Route>
+        <Route path='/edit-leave/:id' element={<LeaveComponent />}></Route>
       </Routes>
       
       <FooterComponent />
