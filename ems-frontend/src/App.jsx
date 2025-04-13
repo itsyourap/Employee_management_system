@@ -18,6 +18,8 @@ import ListShiftComponent from './components/ListShiftComponent'
 import ShiftComponent from './components/ShiftComponent'
 import ListAssetComponent from './components/ListAssetComponent'
 import AssetComponent from './components/AssetComponent'
+import ListEmergencyContactComponent from './components/ListEmergencyContactComponent'
+import EmergencyContactComponent from './components/EmergencyContactComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -61,6 +63,12 @@ function App() {
         <Route path='/add-asset' element={<AssetComponent />}></Route>
         <Route path='/edit-asset/:id' element={<AssetComponent />}></Route>
         <Route path='/view-asset/:id' element={<AssetComponent />}></Route>
+        {/* Emergency Contact Routes */}
+        <Route path='/employees/:employeeId/emergency-contacts' element={<ListEmergencyContactComponent />}></Route>
+        <Route path='/employees/:empId/add-emergency-contact' element={<EmergencyContactComponent />}></Route>
+        <Route path='/employees/:empId/edit-emergency-contact/:id' element={<EmergencyContactComponent />}></Route>
+        <Route path='/add-emergency-contact' element={<EmergencyContactComponent />}></Route>
+        <Route path='/edit-emergency-contact/:id' element={<EmergencyContactComponent />}></Route>
       </Routes>
       
       <FooterComponent />

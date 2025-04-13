@@ -12,18 +12,6 @@ const EmployeeComponent = () => {
   const [email, setEmail] = useState("");
   const [details, setDetails] = useState([{ key: "", value: "" }]);
 
-  function handleFirstName(e) {
-    setFirstName(e.target.value);
-  }
-
-  function handleLastName(e) {
-    setLastName(e.target.value);
-  }
-
-  function handleEmail(e) {
-    setEmail(e.target.value);
-  }
-
   function handleDetailChange(index, field, value) {
     const updatedDetails = [...details];
     updatedDetails[index][field] = value;
@@ -245,6 +233,29 @@ const EmployeeComponent = () => {
                 >
                   Add Detail
                 </button>
+              </div>
+
+              <div className="form-group mb-3">
+                <label className="form-label fw-bold">Emergency Contacts</label>
+                {id && (
+                  <div className="d-grid gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={() =>
+                        navigator(`/employees/${id}/emergency-contacts`)
+                      }
+                    >
+                      <i className="bi bi-telephone-fill me-2"></i>
+                      View/Manage Emergency Contacts
+                    </button>
+                  </div>
+                )}
+                {!id && (
+                  <div className="alert alert-info">
+                    You can add emergency contacts after saving the employee
+                  </div>
+                )}
               </div>
 
               <button
