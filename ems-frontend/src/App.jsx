@@ -1,4 +1,3 @@
-
 import './App.css'
 import EmployeeComponent from './components/EmployeeComponent'
 import FooterComponent from './components/FooterComponent'
@@ -17,6 +16,8 @@ import ListLeaveComponent from './components/ListLeaveComponent'
 import LeaveComponent from './components/LeaveComponent'
 import ListShiftComponent from './components/ListShiftComponent'
 import ShiftComponent from './components/ShiftComponent'
+import ListAssetComponent from './components/ListAssetComponent'
+import AssetComponent from './components/AssetComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -55,6 +56,11 @@ function App() {
         <Route path='/shifts' element={<ListShiftComponent />}></Route>
         <Route path='/add-shift' element={<ShiftComponent />}></Route>
         <Route path='/edit-shift/:id' element={<ShiftComponent />}></Route>
+        {/* Asset Management Routes */}
+        <Route path='/assets' element={<ListAssetComponent />}></Route>
+        <Route path='/add-asset' element={<AssetComponent />}></Route>
+        <Route path='/edit-asset/:id' element={<AssetComponent />}></Route>
+        <Route path='/view-asset/:id' element={<AssetComponent />}></Route>
       </Routes>
       
       <FooterComponent />
