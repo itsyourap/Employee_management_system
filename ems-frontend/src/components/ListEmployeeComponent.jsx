@@ -85,6 +85,13 @@ const ListEmployeeComponent = () => {
                 >
                   Delete
                 </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => navigator(`/employees/${employee.id}/emergency-contacts`)}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Emergency Contacts
+                </button>
               </td>
             </tr>
           ))}
