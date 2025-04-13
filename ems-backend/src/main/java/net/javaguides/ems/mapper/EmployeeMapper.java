@@ -3,6 +3,8 @@ package net.javaguides.ems.mapper;
 import net.javaguides.ems.dto.EmployeeDto;
 import net.javaguides.ems.entity.Employee;
 
+import java.util.stream.Collectors;
+
 public class EmployeeMapper {
   public static EmployeeDto mapToEmployeeDto(Employee employee) {
     return new EmployeeDto(
@@ -10,7 +12,8 @@ public class EmployeeMapper {
         employee.getFirstName(),
         employee.getLastName(),
         employee.getEmail(),
-        employee.getDetails() == null ? null : employee.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetailsDto).toList()
+        employee.getDetails() == null ? null : employee.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetailsDto).toList(),
+        employee.getEmergencyContacts() == null ? null : employee.getEmergencyContacts().stream().map(EmergencyContactMapper::mapToEmergencyContactDto).toList()
     );
   }
 
@@ -21,6 +24,7 @@ public class EmployeeMapper {
         employeeDto.getLastName(),
         employeeDto.getEmail(),
         employeeDto.getDetails() == null ? null : employeeDto.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetails).toList(),
+        null,
         null
     );
   }
