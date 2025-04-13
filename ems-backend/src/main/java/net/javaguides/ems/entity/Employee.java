@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,4 +32,7 @@ public class Employee {
 
   @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<EmployeeDetails> details;
+  
+  @OneToMany(mappedBy = "assignedEmployee", cascade = CascadeType.ALL)
+  private List<Asset> assets = new ArrayList<>();
 }
