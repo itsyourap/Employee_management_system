@@ -20,7 +20,8 @@ public class EmployeeMapper {
         employeeDto.getFirstName(),
         employeeDto.getLastName(),
         employeeDto.getEmail(),
-        employeeDto.getDetails() == null ? null : employeeDto.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetails).toList()
+        employeeDto.getDetails() == null ? null : employeeDto.getDetails().stream().map(EmployeeDetailsMapper::mapToEmployeeDetails).toList(),
+        null
     );
   }
 }
