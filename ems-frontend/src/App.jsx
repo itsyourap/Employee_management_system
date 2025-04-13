@@ -11,6 +11,8 @@ import ListDepartmentComponent from './components/ListDepartmentComponent'
 import DepartmentComponent from './components/DepartmentComponent'
 import ListAttendanceComponent from './components/ListAttendanceComponent'
 import AttendanceComponent from './components/AttendanceComponent'
+import ListCheckInComponent from './components/ListCheckInComponent'
+import CheckInComponent from './components/CheckInComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -38,6 +40,9 @@ function App() {
         <Route path='/add-attendance' element={<AttendanceComponent />}></Route>
         <Route path='/edit-attendance/:date' element={<AttendanceComponent />}></Route>
         <Route path='/view-attendance/:date' element={<AttendanceComponent />}></Route>
+        {/* Check-In Management Routes */}
+        <Route path='/check-ins' element={<ListCheckInComponent />}></Route>
+        <Route path='/add-check-in' element={<CheckInComponent />}></Route>
       </Routes>
       
       <FooterComponent />
