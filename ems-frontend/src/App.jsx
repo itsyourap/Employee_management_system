@@ -9,6 +9,8 @@ import TaskComponent from './components/TaskComponent'
 import HomeComponent from './components/HomeComponent'
 import ListDepartmentComponent from './components/ListDepartmentComponent'
 import DepartmentComponent from './components/DepartmentComponent'
+import ListAttendanceComponent from './components/ListAttendanceComponent'
+import AttendanceComponent from './components/AttendanceComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -31,6 +33,11 @@ function App() {
         <Route path='/departments' element={<ListDepartmentComponent />}></Route>
         <Route path='/add-department' element={<DepartmentComponent />}></Route>
         <Route path='/edit-department/:id' element={<DepartmentComponent />}></Route>
+        {/* Attendance Management Routes */}
+        <Route path='/attendances' element={<ListAttendanceComponent />}></Route>
+        <Route path='/add-attendance' element={<AttendanceComponent />}></Route>
+        <Route path='/edit-attendance/:date' element={<AttendanceComponent />}></Route>
+        <Route path='/view-attendance/:date' element={<AttendanceComponent />}></Route>
       </Routes>
       
       <FooterComponent />

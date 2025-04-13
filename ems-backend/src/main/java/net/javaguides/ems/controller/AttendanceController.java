@@ -1,9 +1,11 @@
 package net.javaguides.ems.controller;
 
 import lombok.AllArgsConstructor;
+import net.javaguides.ems.dto.AttendanceDto;
 import net.javaguides.ems.exception.ResourceNotFoundException;
 import net.javaguides.ems.entity.Attendance;
 import net.javaguides.ems.entity.Employee;
+import net.javaguides.ems.mapper.AttendanceMapper;
 import net.javaguides.ems.repository.AttendanceRepository;
 import net.javaguides.ems.repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -25,85 +28,92 @@ public class AttendanceController {
 
   // Get All Attendances List
   @GetMapping("/attendance")
-  public List<Attendance> getAllTasks() {
-    return attendanceRepository.findAll();
+  public List<AttendanceDto> getAllTasks() {
+    return attendanceRepository.findAll().stream()
+        .map(AttendanceMapper::mapToAttendanceDto)
+        .collect(Collectors.toList());
   }
 
   // Add Attendance Data
   @PostMapping("/attendance")
-  public ResponseEntity<Attendance> createAttendance(@RequestBody Attendance attendance) {
+  public ResponseEntity<AttendanceDto> createAttendance(@RequestBody AttendanceDto attendanceDto) {
+    Attendance attendance = AttendanceMapper.mapToAttendance(attendanceDto);
+    
     for (Employee employee : attendance.getPresentEmployees()) {
       Optional<Employee> employeeInDb = employeeRepository.findById(employee.getId());
       if (employeeInDb.isEmpty())
-        return ResponseEntity.badRequest().body(attendance);
+        return ResponseEntity.badRequest().body(attendanceDto);
     }
 
     if (attendance.getPresentEmployees().isEmpty())
-      return ResponseEntity.badRequest().body(attendance);
+      return ResponseEntity.badRequest().body(attendanceDto);
 
-    return ResponseEntity.ok(attendanceRepository.save(attendance));
+    Attendance savedAttendance = attendanceRepository.save(attendance);
+    return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(savedAttendance));
   }
 
   // Get Attendance by ID
   @GetMapping("/attendance/{id}")
-  public ResponseEntity<Attendance> getAttendanceById(@PathVariable Long id) {
+  public ResponseEntity<AttendanceDto> getAttendanceById(@PathVariable Long id) {
     Attendance attendance = attendanceRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Attendance Record does not exist with id:" + id));
 
-    return ResponseEntity.ok(attendance);
+    return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(attendance));
   }
 
   // Get Attendance by Date
   @GetMapping("/attendance/date/{date}")
-  public ResponseEntity<Attendance> getAttendanceByDate(@PathVariable String date) {
+  public ResponseEntity<AttendanceDto> getAttendanceByDate(@PathVariable String date) {
     Attendance attendance = attendanceRepository.findByDate(LocalDate.parse(date))
         .orElseThrow(() -> new ResourceNotFoundException("Attendance Record does not exist with date:" + date));
 
-    return ResponseEntity.ok(attendance);
+    return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(attendance));
   }
 
   // Update Attendance by ID
   @PutMapping("/attendance/{id}")
-  public ResponseEntity<Attendance> updateAttendanceRecord(@PathVariable Long id, @RequestBody Attendance attendanceDetails) {
+  public ResponseEntity<AttendanceDto> updateAttendanceRecord(@PathVariable Long id, @RequestBody AttendanceDto attendanceDetailsDto) {
+    Attendance attendanceDetails = AttendanceMapper.mapToAttendance(attendanceDetailsDto);
     Attendance attendance = attendanceRepository.findById(id).orElse(attendanceDetails);
 
     for (Employee employee : attendanceDetails.getPresentEmployees()) {
       Optional<Employee> employeeInDb = employeeRepository.findById(employee.getId());
       if (employeeInDb.isEmpty())
-        return ResponseEntity.badRequest().body(attendance);
+        return ResponseEntity.badRequest().body(attendanceDetailsDto);
     }
 
     attendance.setPresentEmployees(attendanceDetails.getPresentEmployees());
 
     if (attendance.getPresentEmployees().isEmpty()){
       attendanceRepository.delete(attendance);
-      return ResponseEntity.ok(attendanceDetails);
+      return ResponseEntity.ok(attendanceDetailsDto);
     }
 
-    Attendance updateAttendance = attendanceRepository.save(attendance);
-    return ResponseEntity.ok(updateAttendance);
+    Attendance updatedAttendance = attendanceRepository.save(attendance);
+    return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(updatedAttendance));
   }
 
   // Update Attendance by Date
   @PutMapping("/attendance/date/{date}")
-  public ResponseEntity<Attendance> updateAttendanceRecord(@PathVariable String date, @RequestBody Attendance attendanceDetails) {
+  public ResponseEntity<AttendanceDto> updateAttendanceRecord(@PathVariable String date, @RequestBody AttendanceDto attendanceDetailsDto) {
+    Attendance attendanceDetails = AttendanceMapper.mapToAttendance(attendanceDetailsDto);
     Attendance attendance = attendanceRepository.findByDate(LocalDate.parse(date)).orElse(attendanceDetails);
 
     for (Employee employee : attendanceDetails.getPresentEmployees()) {
       Optional<Employee> employeeInDb = employeeRepository.findById(employee.getId());
       if (employeeInDb.isEmpty())
-        return ResponseEntity.badRequest().body(attendance);
+        return ResponseEntity.badRequest().body(attendanceDetailsDto);
     }
 
     attendance.setPresentEmployees(attendanceDetails.getPresentEmployees());
 
     if (attendance.getPresentEmployees().isEmpty()){
       attendanceRepository.delete(attendance);
-      return ResponseEntity.ok(attendanceDetails);
+      return ResponseEntity.ok(attendanceDetailsDto);
     }
 
-    Attendance updateAttendance = attendanceRepository.save(attendance);
-    return ResponseEntity.ok(updateAttendance);
+    Attendance updatedAttendance = attendanceRepository.save(attendance);
+    return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(updatedAttendance));
   }
 
   // Delete Attendance Records by ID
@@ -130,10 +140,9 @@ public class AttendanceController {
     return response;
   }
 
-
   // Mark Employee Attendance Status by Attendance Date
   @PutMapping("/attendance/{attendanceDate}/employees")
-  public ResponseEntity<Attendance> markEmployeeAttendanceStatus(@PathVariable String attendanceDate, @RequestBody Map<String, Object> data) {
+  public ResponseEntity<AttendanceDto> markEmployeeAttendanceStatus(@PathVariable String attendanceDate, @RequestBody Map<String, Object> data) {
     long employeeId = (long) data.getOrDefault("employeeId", -1);
     boolean isPresent = ((int) data.getOrDefault("employeeId", 0)) == 1;
 
@@ -146,8 +155,8 @@ public class AttendanceController {
     boolean marked = isPresent ? attendance.markEmployeeAsPresent(employee) : attendance.markEmployeeAsAbsent(employee);
     Attendance updatedAttendance = attendanceRepository.save(attendance);
     if (marked)
-      return ResponseEntity.ok(updatedAttendance);
+      return ResponseEntity.ok(AttendanceMapper.mapToAttendanceDto(updatedAttendance));
     else
-      return ResponseEntity.badRequest().body(updatedAttendance);
+      return ResponseEntity.badRequest().body(AttendanceMapper.mapToAttendanceDto(updatedAttendance));
   }
 }

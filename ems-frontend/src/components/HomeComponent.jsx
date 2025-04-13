@@ -49,6 +49,20 @@ const HomeComponent = () => {
             </div>
           </div>
         </div>
+        <div className="col-md-4 mb-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body text-center">
+              <h3 className="card-title mb-4">Attendance Management</h3>
+              <p className="card-text">Track and manage employee attendance, view attendance records and generate reports.</p>
+              <button 
+                className="btn btn-primary btn-lg"
+                onClick={() => navigate('/attendances')}
+              >
+                View Attendance
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
