@@ -15,6 +15,8 @@ import ListCheckInComponent from './components/ListCheckInComponent'
 import CheckInComponent from './components/CheckInComponent'
 import ListLeaveComponent from './components/ListLeaveComponent'
 import LeaveComponent from './components/LeaveComponent'
+import ListShiftComponent from './components/ListShiftComponent'
+import ShiftComponent from './components/ShiftComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -49,6 +51,10 @@ function App() {
         <Route path='/leaves' element={<ListLeaveComponent />}></Route>
         <Route path='/add-leave' element={<LeaveComponent />}></Route>
         <Route path='/edit-leave/:id' element={<LeaveComponent />}></Route>
+        {/* Shift Management Routes */}
+        <Route path='/shifts' element={<ListShiftComponent />}></Route>
+        <Route path='/add-shift' element={<ShiftComponent />}></Route>
+        <Route path='/edit-shift/:id' element={<ShiftComponent />}></Route>
       </Routes>
       
       <FooterComponent />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createTask, getTask, updateTask, assignEmployeeToTask, removeEmployeeFromTask } from "../services/TaskService";
+import { createTask, getTask, updateTask } from "../services/TaskService";
 import { listEmployees } from "../services/EmployeeService";
 
 const TaskComponent = () => {
