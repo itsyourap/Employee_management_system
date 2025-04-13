@@ -11,7 +11,7 @@ const HomeComponent = () => {
           <div className="card h-100 shadow-sm">
             <div className="card-body text-center">
               <h3 className="card-title mb-4">Employee Management</h3>
-              <p className="card-text">Manage your employees' information, including personal details and contact information.</p>
+              <p className="card-text">Manage your employees&apos; information, including personal details and contact information.</p>
               <button 
                 className="btn btn-primary btn-lg"
                 onClick={() => navigate('/employees')}
@@ -104,6 +104,21 @@ const HomeComponent = () => {
                 onClick={() => navigate('/shifts')}
               >
                 View Shifts
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4 mb-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body text-center">
+              <h3 className="card-title mb-4">Asset Management</h3>
+              <p className="card-text">Track company equipment, assign assets to employees, and manage asset lifecycle.</p>
+              <button 
+                className="btn btn-primary btn-lg"
+                onClick={() => navigate('/assets')}
+              >
+                View Assets
               </button>
             </div>
           </div>
